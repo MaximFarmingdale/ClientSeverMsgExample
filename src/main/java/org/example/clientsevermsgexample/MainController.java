@@ -70,17 +70,18 @@ public class MainController implements Initializable {
 
         String host = urlName.getText();
         int port = Integer.parseInt(dropdownPort.getValue().toString());
-
-        try {
-            Socket sock = new Socket(host, port);
-            resultArea.appendText(host + " listening on port " + port + "\n");
-            sock.close();
-        } catch (UnknownHostException e) {
-            resultArea.setText(String.valueOf(e) + "\n");
-            return;
-        } catch (Exception e) {
-            resultArea.appendText(host + " not listening on port "
-                    + port + "\n");
+        if(!host.isEmpty()) {
+            try {
+                Socket sock = new Socket(host, port);
+                resultArea.appendText(host + " listening on port " + port + "\n");
+                sock.close();
+            } catch (UnknownHostException e) {
+                resultArea.setText(String.valueOf(e) + "\n");
+                return;
+            } catch (Exception e) {
+                resultArea.appendText(host + " not listening on port "
+                        + port + "\n");
+            }
         }
 
 
@@ -228,6 +229,33 @@ public class MainController implements Initializable {
     private void updateTextClient(String message) {
         // Run on the UI thread
         javafx.application.Platform.runLater(() -> lb122.setText(message + "\n"));
+    }
+    @FXML
+    void openClientView(ActionEvent event) {
+        try {
+            Stage stage = (Stage) clearBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/clientsevermsgexample/client-view.fxml"));
+            Parent newRoot = loader.load();
+            Scene scene = new Scene(newRoot, 588, 412);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void openServerView(ActionEvent event) {
+        try {
+            Stage stage = (Stage) clearBtn.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/clientsevermsgexample/server-view.fxml"));
+            Parent newRoot = loader.load();
+            Scene scene = new Scene(newRoot, 588, 412);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
